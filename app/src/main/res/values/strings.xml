@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Crop Care</string>
+    <string name="english_lang">English</string>
+
+    <string name="hindi_lang">हिंदी</string>
+
+
+    <string name="crop_prediction_hh">फसल की भविष्यवाणी</string>
+    <string name="crop_prediction_hd">ऐतिहासिक डेटा और पर्यावरणीय कारकों पर आधारित फसल की वृद्धि और उत्पादन की भविष्यवाणी, किसानों को बुआई और कटाई प्रबंधन के बारे में सूचित निर्णय लेने में मदद करना।</string>
+    <string name="crop_yield_prediction_hh">फसल उत्पादन की भविष्यवाणी</string>
+    <string name="crop_yield_prediction_hd">क्षेत्र या खेत में अपेक्षित फसल उत्पादन की पूर्वानुमान, किसानों को संसाधन वितरण और बाजार योजना के लिए मार्गदर्शन प्रदान करते हुए सर्वोत्तम उत्पादकता के लिए।</string>
+    <string name="crop_price_prediction_hh">फसल कीमत की भविष्यवाणी</string>
+    <string name="crop_price_prediction_hd">कृषि वस्त्रों के भविष्यवाणी के लिए आगामी बाजार कीमतों की आशा, आपूर्ति-मांग गतिकी और वैश्विक प्रवृत्तियों के आधार पर बाजारिकी, बिक्री और निवेश पर सूचित निर्णय लेने में स्थाकांकगतता प्रदान करते हुए।</string>
+    <string name="fertilizer_prediction_hh">उर्वरक की सिफारिश</string>
+    <string name="fertilizer_prediction_hd">मिट्टी के विश्लेषण और पोषक तत्वों के आधार पर फसल की वृद्धि को अनुकूलित करने के लिए उर्वरक प्रकारों और मात्राओं पर विशेषज्ञ मार्गदर्शन, जलवायु पर्यावरण को कम करते हुए।</string>
+    <string name="crop_pest_prediction_hh">कीट और रोग की भविष्यवाणी</string>
+    <string name="crop_pest_prediction_hd">उन्नत तकनीकों का उपयोग करके फसल के कीटों और रोगों की पहचान, हानि को कम करने और स्वस्थ उत्पाद को सुनिश्चित करने के लिए समय पर इंटरवेंशन रणनीतियों की संभावना।</string>
+    <string name="intro_h">डेटा-निर्धारित कृषि की शक्ति को खोलें। अनुकूलित फसल प्रबंधन, संसाधन वितरण, और बाजार खुफिया के लिए पूर्वानुमानी उपकरण अन्वेषित करें, कृषि अभ्यासों को क्रांतिकारी बनाते हुए।</string>
+
+
+    <string name="crop_prediction_eh">Crop Prediction</string>
+    <string name="crop_prediction_ed">Forecasting crop growth and output based on historical data and environmental factors, aiding farmers in making informed decisions about planting and harvest management.</string>
+    <string name="crop_yield_prediction_eh">Crop Yield Prediction</string>
+    <string name="crop_yield_prediction_ed">Predicting expected crop output within a region or farm, guiding farmers in resource allocation and market planning for optimal productivity.</string>
+    <string name="crop_price_prediction_eh">Crop Price Prediction</string>
+    <string name="crop_price_prediction_ed">Anticipating future market prices for agricultural commodities, empowering stakeholders to make informed decisions on marketing, sales, and investments based on supply-demand dynamics and global trends.</string>
+    <string name="fertilizer_prediction_eh">Fertilizer Recommendation</string>
+    <string name="fertilizer_prediction_ed">Tailored guidance on fertilizer types and quantities to optimize crop growth, based on soil analysis and nutrient requirements, while minimizing environmental impact.</string>
+    <string name="crop_pest_pridiction_eh">Pest and Disease Detection</string>
+    <string name="crop_pest_pridiction_ed">Early identification of crop pests and diseases using advanced technologies, enabling timely intervention strategies to minimize losses and ensure healthy yields.</string>
+    <string name="intro_e">Unlock the power of data-driven farming. Explore predictive tools for optimized crop management, resource allocation, and market intelligence, revolutionizing agricultural practices.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn = "navigation_view">
+
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/crop_prediction"
+            android:icon="@drawable/crop_prediction_icon"
+            android:title="Crop Prediction"/>
+
+        <item
+            android:id="@+id/crop_yield"
+            android:icon="@drawable/crop_yield_icon"
+            android:title="Crop Yield Prediction"/>
+
+        <item
+            android:id="@+id/Fertilizer"
+            android:icon="@drawable/fertilizer_recomm_icon"
+            android:title="Fertilizer Recommendation"/>
+
+        <item
+            android:id="@+id/pest_prediction"
+            android:icon="@drawable/pest_prediction_icon"
+            android:title="Pest Prediction"/>
+    </group>
+    <item
+        android:title="General">
+
+        <menu>
+            <item
+                android:id="@+id/history"
+                android:icon="@drawable/history_icon"
+                android:title="History"/>
+            <item
+                android:id="@+id/language"
+                android:icon="@drawable/language_icon"
+                android:title="Language"/>
+            <item
+                android:id="@+id/profile"
+                android:icon="@drawable/profile_icon"
+                android:title="Profile"/>
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/logout"
+                android:title="Logout"/>
+        </menu>
+
+    </item>
+
+</menu>

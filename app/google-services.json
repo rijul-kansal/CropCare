@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "858272263460",
+    "project_id": "crop-care-b1ede",
+    "storage_bucket": "crop-care-b1ede.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858272263460:android:2f202da1f1eb1e4a2257b1",
+        "android_client_info": {
+          "package_name": "com.learning.cropcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZlI7gtPGjYg15EZYYWDCKWn2GPQArDVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".Fragment.PestDetection">
+    <ImageView
+        android:id="@+id/enjoy"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/enjoy"/>
+    <TextView
+        android:id="@+id/Sign_IIn_Btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="332dp"
+        android:layout_marginLeft="96dp"
+        android:layout_marginRight="96dp"
+        android:background="@drawable/button_bg"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:text="Take Photo"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="442dp"
+        android:gravity="center"
+        android:text="Take Photo"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</FrameLayout>
