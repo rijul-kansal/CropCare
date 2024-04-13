@@ -33,6 +33,11 @@ class SignInActivity : BaseActivity() {
 
         viewModel= ViewModelProvider(this)[AuthenticationViewModel::class.java]
         try {
+            binding.mobileAuth.setOnClickListener {
+                var intent=Intent(this,MobileNumberSignInActivity::class.java)
+                intent.putExtra(Constants.SIGNUP_OR_SIGN_IN,"signIn")
+                startActivity(intent)
+            }
             email=""
             password=""
             if(intent.hasExtra(Constants.PASSWORD))

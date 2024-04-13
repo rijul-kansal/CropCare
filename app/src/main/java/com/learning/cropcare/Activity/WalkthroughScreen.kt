@@ -1,5 +1,6 @@
 package com.learning.cropcare.Activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.learning.cropcare.Adapter.ViewPagerAdapter
 import com.learning.cropcare.R
+import com.learning.cropcare.Utils.Constants
 import com.learning.cropcare.databinding.ActivityWalkthroughScreenBinding
 
 class WalkthroughScreen : AppCompatActivity() {
@@ -16,7 +18,7 @@ class WalkthroughScreen : AppCompatActivity() {
     var images = ArrayList<Int>()
     var headings = ArrayList<Int>()
     var descriptions = ArrayList<Int>()
-
+    var languagechoosen:String?=null
     private lateinit var dots: ArrayList<TextView>
 
     lateinit var viewPagerAdapter: ViewPagerAdapter
@@ -27,7 +29,20 @@ class WalkthroughScreen : AppCompatActivity() {
 
 
         try {
-            populateData();
+            val sharedPreference =  getSharedPreferences(Constants.LANGUAGE, Context.MODE_PRIVATE)
+            languagechoosen=sharedPreference.getString("language","english")
+            Log.d("rk","languiageChoosen $languagechoosen")
+            if(languagechoosen=="english")
+            {
+                populateData()
+            }
+            else
+            {
+                populateData2()
+                binding.skipButton.text = resources.getString(R.string.skip_h)
+
+                binding.frontbtn.text= resources.getString(R.string.Next_h)
+            }
             dots = ArrayList()
             binding.frontbtn.setOnClickListener {
                 if (getItem(0) < 3) {
@@ -76,25 +91,30 @@ class WalkthroughScreen : AppCompatActivity() {
         override fun onPageSelected(position: Int) {
             setUpIndicator(position)
 
-            if (position > 0) {
-                binding.frontbtn.text = "Next"
+            if (position > 0 && position<3) {
+                if(languagechoosen == "hindi")
+                    binding.frontbtn.text= resources.getString(R.string.Next_h)
+                else
+                    binding.frontbtn.text = resources.getString(R.string.Next_e)
             } else if(position==3) {
-                binding.frontbtn.text = "Get Started"
+                if(languagechoosen == "hindi")
+                    binding.frontbtn.text= resources.getString(R.string.Get_Started_h)
+                else
+                    binding.frontbtn.text = resources.getString(R.string.Get_Started_e)
             }
         }
         override fun onPageScrollStateChanged(state: Int) {}
     }
 
     private fun getItem(i: Int): Int {
-        return binding.slideViewPager?.currentItem?.plus(i) ?: 0
+        return binding.slideViewPager.currentItem.plus(i) ?: 0
     }
 
-    fun populateData()
-    {
+    fun populateData() {
         images.add( R.drawable.crop_prediction1)
         images.add( R.drawable.crop_yeild_prediction)
         images.add( R.drawable.fertilizer)
-        images.add( R.drawable.pest_pic)
+        images.add( R.drawable.img_4)
 
         headings.add(R.string.crop_prediction_eh)
         headings.add(R.string.crop_yield_prediction_eh)
@@ -105,6 +125,23 @@ class WalkthroughScreen : AppCompatActivity() {
         descriptions.add(R.string.crop_yield_prediction_ed)
         descriptions.add(R.string.fertilizer_prediction_ed)
         descriptions.add(R.string.crop_yield_prediction_ed)
+
+    }
+    fun populateData2() {
+        images.add( R.drawable.crop_prediction1)
+        images.add( R.drawable.crop_yeild_prediction)
+        images.add( R.drawable.fertilizer)
+        images.add( R.drawable.img_4)
+
+        headings.add(R.string.crop_prediction_hh)
+        headings.add(R.string.crop_yield_prediction_hh)
+        headings.add(R.string.fertilizer_prediction_hh)
+        headings.add(R.string.crop_pest_prediction_hh)
+
+        descriptions.add(R.string.crop_prediction_hd)
+        descriptions.add(R.string.crop_yield_prediction_hd)
+        descriptions.add(R.string.fertilizer_prediction_hd)
+        descriptions.add(R.string.crop_yield_prediction_hd)
 
     }
 }

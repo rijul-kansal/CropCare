@@ -19,7 +19,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        // TODO Language
+        // TODO GPS
+        // TODO Mobile Number
+        // TODO UI Update
+        // TODO MODEL Deployment
+        // TODO PDF of Hisotory
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)

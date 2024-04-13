@@ -35,6 +35,13 @@ class SignUpActivity : BaseActivity() {
                 startActivity(Intent(this, SignInActivity::class.java))
                 finish()
             }
+
+            binding.mobileAuth.setOnClickListener {
+                var intent=Intent(this,MobileNumberSignInActivity::class.java)
+                intent.putExtra(Constants.SIGNUP_OR_SIGN_IN,"signUp")
+                startActivity(intent)
+                finish()
+            }
             // sign up
             binding.SignUpBtn.setOnClickListener{
                 email=binding.etEmail.text.toString()
@@ -131,4 +138,6 @@ class SignUpActivity : BaseActivity() {
             }
         })
     }
+
+
 }

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,21 +19,24 @@
         android:theme="@style/Theme.CropCare"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.IntroActivity"
+            android:name=".Activity.MobileNumberSignInActivity"
             android:theme="@style/AboveAppBarColourlightGreen"
             android:exported="false" />
+        <activity
+            android:name=".Activity.IntroActivity"
+            android:exported="false"
+            android:theme="@style/AboveAppBarColourlightGreen" />
         <activity
             android:name=".Utils.BaseActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.WalkthroughScreen"
-            android:theme="@style/AboveAppBarColourlightGreen"
-            android:exported="true" >
-        </activity>
+            android:exported="true"
+            android:theme="@style/AboveAppBarColourlightGreen"></activity>
         <activity
             android:name=".Activity.SignInActivity"
             android:exported="true"
-            android:theme="@style/AboveAppBarColourlightGreen"></activity>
+            android:theme="@style/AboveAppBarColourlightGreen" />
         <activity
             android:name=".Activity.SignUpActivity"
             android:exported="true"
@@ -43,33 +48,31 @@
             android:theme="@style/AboveAppBarColourlightGreen" />
         <activity
             android:name=".Activity.SplashScreenActivity"
-            android:theme="@style/AboveAppBarColourWhite"
-            android:exported="true" >
+            android:exported="true"
+            android:theme="@style/AboveAppBarColourWhite">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activity.MainActivity"
-            android:theme="@style/AboveAppBarColourWhite"
-            android:exported="true" >
-        </activity>
-            <provider
-                android:authorities="com.learning.cropcare.Activity.fileProvider"
-                android:name="androidx.core.content.FileProvider"
-                android:exported="false"
-                android:grantUriPermissions="true">
-                <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/file_paths"/>
-                <meta-data
-                    android:name="android.app.lib_name"
-                    android:value="" />
-            </provider>
+            android:exported="true"
+            android:theme="@style/AboveAppBarColourWhite"></activity>
 
-
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.learning.cropcare.Activity.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </provider>
     </application>
 
 </manifest>

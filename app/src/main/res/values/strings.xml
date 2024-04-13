@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Crop Care</string>
-    <string name="english_lang">English</string>
 
+    <string name="english_lang">English</string>0
     <string name="hindi_lang">हिंदी</string>
-
 
     <string name="crop_prediction_hh">फसल की भविष्यवाणी</string>
     <string name="crop_prediction_hd">ऐतिहासिक डेटा और पर्यावरणीय कारकों पर आधारित फसल की वृद्धि और उत्पादन की भविष्यवाणी, किसानों को बुआई और कटाई प्रबंधन के बारे में सूचित निर्णय लेने में मदद करना।</string>
@@ -17,7 +16,6 @@
     <string name="crop_pest_prediction_hd">उन्नत तकनीकों का उपयोग करके फसल के कीटों और रोगों की पहचान, हानि को कम करने और स्वस्थ उत्पाद को सुनिश्चित करने के लिए समय पर इंटरवेंशन रणनीतियों की संभावना।</string>
     <string name="intro_h">डेटा-निर्धारित कृषि की शक्ति को खोलें। अनुकूलित फसल प्रबंधन, संसाधन वितरण, और बाजार खुफिया के लिए पूर्वानुमानी उपकरण अन्वेषित करें, कृषि अभ्यासों को क्रांतिकारी बनाते हुए।</string>
 
-
     <string name="crop_prediction_eh">Crop Prediction</string>
     <string name="crop_prediction_ed">Forecasting crop growth and output based on historical data and environmental factors, aiding farmers in making informed decisions about planting and harvest management.</string>
     <string name="crop_yield_prediction_eh">Crop Yield Prediction</string>
@@ -29,7 +27,12 @@
     <string name="crop_pest_pridiction_eh">Pest and Disease Detection</string>
     <string name="crop_pest_pridiction_ed">Early identification of crop pests and diseases using advanced technologies, enabling timely intervention strategies to minimize losses and ensure healthy yields.</string>
     <string name="intro_e">Unlock the power of data-driven farming. Explore predictive tools for optimized crop management, resource allocation, and market intelligence, revolutionizing agricultural practices.</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="Next_h">अगला</string>
+    <string name="Get_Started_h">शुरू करें</string>
+    <string name="skip_h">छोड़ें</string>
+    <string name="Next_e">Next</string>
+    <string name="Get_Started_e">Get Started</string>
+    <string name="skip_e">Skip</string>
 </resources>
