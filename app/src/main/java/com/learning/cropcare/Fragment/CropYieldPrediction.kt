@@ -50,39 +50,39 @@ class CropYieldPrediction : Fragment() {
             stateArrFn()
             cropArrFn()
             seasonArrFn()
-            binding.areaValue.setOnClickListener {
+            binding.areaCardView.setOnClickListener {
                 singleValueTypePopUp("Please enter the area value", areaValue) { newValue ->
                     areaValue = newValue
                     Log.d("rk", areaValue.toString())
-                    binding.areaValue1.text="Area ${areaValue.toString()}"
+                    binding.areaValue.text="${areaValue.toString()}"
                 }
             }
 
-            binding.stateValue.setOnClickListener {
+            binding.stateCardView.setOnClickListener {
                 singleValueChoosePopUp("Please choose one state value",statesArrayList) { newValue ->
                     stateValue = newValue
                     Log.d("rk", stateValue.toString())
-                    binding.stateValue1.text="State ${statesArrayList[stateValue]}"
+                    binding.stateValue.text="${statesArrayList[stateValue]}"
                 }
             }
-            binding.cropValue.setOnClickListener {
+            binding.cropCardView.setOnClickListener {
                 singleValueChoosePopUp("Please choose one crop value",cropsArrayList) { newValue ->
                     cropValue = newValue
                     Log.d("rk", cropValue.toString())
-                    binding.cropValue1.text="Crop ${cropsArrayList[cropValue]}"
+                    binding.cropValue.text="${cropsArrayList[cropValue]}"
                 }
             }
-            binding.yearValue.setOnClickListener {
+            binding.yearCardView.setOnClickListener {
                 val currentDate = LocalDate.now()
                 val currentYear = currentDate.year
-                binding.yearValue1.text=currentYear.toString()
+                binding.yearValue.text=currentYear.toString()
                 yearValue=currentYear
             }
-            binding.seasonValue.setOnClickListener {
+            binding.seasonCardView.setOnClickListener {
                 singleValueChoosePopUp("Please choose one season value",seasonsArrayList) { newValue ->
                     seasonValue = newValue
                     Log.d("rk", seasonValue.toString())
-                    binding.seasonValue1.text="Season ${seasonsArrayList[seasonValue]}"
+                    binding.seasonValue.text="${seasonsArrayList[seasonValue]}"
                 }
             }
             binding.predictYield.setOnClickListener {

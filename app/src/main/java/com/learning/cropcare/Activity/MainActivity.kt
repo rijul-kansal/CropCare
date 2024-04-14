@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         // TODO Language
         // TODO GPS
-        // TODO Mobile Number
         // TODO UI Update
         // TODO MODEL Deployment
         // TODO PDF of Hisotory

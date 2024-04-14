@@ -10,6 +10,7 @@
     <color name="main_color">#aacc00</color>
     <color name="background">#FCFFEA</color>
     <color name="grey">#adb5bd</color>
+    <color name="red">#d00000</color>
 
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>

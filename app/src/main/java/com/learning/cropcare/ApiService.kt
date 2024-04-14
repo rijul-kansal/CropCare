@@ -23,9 +23,8 @@ interface ApiService {
 
     @POST("/cropPrediction")
     suspend fun cropPrediction(@Body request: CropPredictionInputModel): Response<CropPridictionOutputModel>
-    @POST("/")
+    @POST("/rainfall")
     suspend fun rainfall(@Body request: RainfallInputModel): Response<RainfallOutputModel>
 
-    @POST("/")
-    suspend fun pest(@Body request: PestDetectionInputModel): Response<PestPredictionOutputModel>
+
 }

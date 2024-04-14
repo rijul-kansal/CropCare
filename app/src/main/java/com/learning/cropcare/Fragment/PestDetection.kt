@@ -65,23 +65,23 @@ class PestDetection : Fragment() {
             binding.SignIInBtn.setOnClickListener {
                 showOptionsDialog()
             }
-            viewModel1.observe_pest().observe(requireActivity(), Observer {res->
-                cancelProgressbar()
-                if(res.isSuccessful)
-                {
-                    binding.value.text= "The Predected pest is   ${res.body()!!.pest.toString()}"
-                }
-                else
-                {
-                }
-            })
-            viewModel.observe().observe(requireActivity(), Observer {res->
-                if(res!=null)
-                {
-                    Log.d("rk","final final ${res.toString()}")
-                    viewModel1.pest(requireContext(),PestDetectionInputModel(res!!),this)
-                }
-            })
+//            viewModel1.observe_pest().observe(requireActivity(), Observer {res->
+//                cancelProgressbar()
+//                if(res.isSuccessful)
+//                {
+//                    binding.value.text= "The Predected pest is   ${res.body()!!.pest.toString()}"
+//                }
+//                else
+//                {
+//                }
+//            })
+//            viewModel.observe().observe(requireActivity(), Observer {res->
+//                if(res!=null)
+//                {
+//                    Log.d("rk","final final ${res.toString()}")
+//                    viewModel1.pest(requireContext(),PestDetectionInputModel(res!!),this)
+//                }
+//            })
         }catch (e:Exception)
         {
             Log.d("rk",e.message.toString())

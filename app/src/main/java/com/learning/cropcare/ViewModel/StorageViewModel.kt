@@ -45,7 +45,7 @@ class StorageViewModel : ViewModel() {
                     Log.d("rk","final "+downloadUri.toString())
                     val uri: Uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/crop-care-b1ede.appspot.com/o/UserImages%2F1000115795?alt=media&token=1c585f57-336d-443f-bfe3-b2924570937e")
 
-                    APIViewModel().pest(context, PestDetectionInputModel(uri),fragment)
+//                    APIViewModel().pest(context, PestDetectionInputModel(uri),fragment)
                     val valuee=downloadUri.toString()
                     val map= HashMap<String,String>()
                     map["image"] = valuee

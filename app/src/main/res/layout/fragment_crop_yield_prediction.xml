@@ -2,8 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
     tools:context=".Fragment.CropYieldPrediction">
     <ScrollView
         android:layout_width="match_parent"
@@ -14,13 +14,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <androidx.cardview.widget.CardView
+                android:id="@+id/seasonCardView"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp">
                 <LinearLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -35,28 +35,55 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
-                            android:id="@+id/seasonValue1"
                             android:layout_weight="1"
                             android:textSize="20sp"
                             android:layout_marginLeft="8dp"
                             android:textColor="@color/white"
                             android:textStyle="bold"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Seasons"/>
-                        <ImageView
-                            android:id="@+id/seasonValue"
-                            android:layout_marginRight="12dp"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/baseline_arrow_drop_down_24"/>
+                            android:orientation="horizontal">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <TextView
+                                    android:paddingLeft="4dp"
+                                    android:textStyle="bold"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/black"
+                                    android:id="@+id/seasonValue"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="@color/white"/>
+                                <ImageView
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_down_24"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:layout_marginTop="20dp"
+                android:id="@+id/stateCardView"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp">
@@ -75,28 +102,55 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
-                            android:id="@+id/stateValue1"
                             android:layout_weight="1"
                             android:textSize="20sp"
                             android:layout_marginLeft="8dp"
                             android:textColor="@color/white"
                             android:textStyle="bold"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="state" />
-                        <ImageView
-                            android:id="@+id/stateValue"
-                            android:layout_marginRight="12dp"
-                            android:layout_width="wrap_content"
+                            android:text="State"/>
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/baseline_arrow_drop_down_24"/>
+                            android:orientation="horizontal">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <TextView
+                                    android:paddingLeft="4dp"
+                                    android:textStyle="bold"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/black"
+                                    android:id="@+id/stateValue"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="@color/white"/>
+                                <ImageView
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_down_24"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:layout_marginTop="16dp"
+                android:id="@+id/areaCardView"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp">
@@ -115,28 +169,55 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
-                            android:id="@+id/areaValue1"
                             android:layout_weight="1"
                             android:textSize="20sp"
                             android:layout_marginLeft="8dp"
                             android:textColor="@color/white"
                             android:textStyle="bold"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Area"/>
-                        <ImageView
-                            android:id="@+id/areaValue"
-                            android:layout_marginRight="12dp"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/baseline_arrow_drop_down_24"/>
+                            android:orientation="horizontal">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <TextView
+                                    android:paddingLeft="4dp"
+                                    android:textStyle="bold"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/black"
+                                    android:id="@+id/areaValue"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="@color/white"/>
+                                <ImageView
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_down_24"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:layout_marginTop="16dp"
+                android:id="@+id/cropCardView"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp">
@@ -145,7 +226,6 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
                     <ImageView
-
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="fitXY"
@@ -156,28 +236,56 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
-                            android:id="@+id/cropValue1"
+                            android:paddingLeft="4dp"
                             android:layout_weight="1"
                             android:textSize="20sp"
                             android:layout_marginLeft="8dp"
                             android:textColor="@color/white"
                             android:textStyle="bold"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Crop"/>
-                        <ImageView
-                            android:id="@+id/cropValue"
-                            android:layout_marginRight="12dp"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/baseline_arrow_drop_down_24"/>
+                            android:orientation="horizontal">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <TextView
+                                    android:paddingLeft="4dp"
+                                    android:textStyle="bold"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/black"
+                                    android:id="@+id/cropValue"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="@color/white"/>
+                                <ImageView
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_down_24"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:layout_marginTop="16dp"
+                android:id="@+id/yearCardView"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp">
@@ -196,21 +304,47 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
-                            android:id="@+id/yearValue1"
                             android:layout_weight="1"
                             android:textSize="20sp"
                             android:layout_marginLeft="8dp"
                             android:textColor="@color/white"
                             android:textStyle="bold"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Year"/>
-                        <ImageView
-                            android:id="@+id/yearValue"
-                            android:layout_marginRight="12dp"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/baseline_arrow_drop_down_24"/>
+                            android:orientation="horizontal">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <TextView
+                                    android:paddingLeft="4dp"
+                                    android:textStyle="bold"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/black"
+                                    android:id="@+id/yearValue"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="@color/white"/>
+                                <ImageView
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/baseline_arrow_drop_down_24"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -225,7 +359,7 @@
                 android:gravity="center"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
-                android:text="Predict Yield"
+                android:text="Predict Crop"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -243,6 +377,4 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
-
-
 </FrameLayout>

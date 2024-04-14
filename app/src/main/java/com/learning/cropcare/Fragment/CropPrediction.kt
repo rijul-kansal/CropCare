@@ -145,55 +145,53 @@ class CropPrediction : Fragment() {
         )
         val stateList = ArrayList<String>(stateMappings.keys)
 
-        binding.areaValue.setOnClickListener {
+        binding.areaCardView.setOnClickListener {
             singleValueTypePopUp("Please enter the area value", areaValue) { newValue ->
                 areaValue = newValue
                 Log.d("rk", areaValue.toString())
-                binding.areaValue1.text=areaValue.toString()
+                binding.areaValue.text=areaValue.toString()
             }
         }
-        binding.stateValue.setOnClickListener {
+        binding.stateCardView.setOnClickListener {
             singleValueChoosePopUp("Please choose one state value",stateList) { newValue ->
                 stateValue = newValue
                 Log.d("rk", stateValue.toString())
-                binding.stateValue1.text=stateList[stateValue]
+                binding.stateValue.text=stateList[stateValue]
             }
         }
-        binding.seasonValue.setOnClickListener {
+        binding.seasonCardView.setOnClickListener {
             singleValueChoosePopUp("Please choose one season value",seasonList) { newValue ->
                 seasonValue = newValue
                 Log.d("rk", seasonValue.toString())
-                binding.seasonValue1.text=seasonList[seasonValue]
+                binding.seasonValue.text=seasonList[seasonValue]
             }
         }
-//        binding.annunalRainfallValue.setOnClickListener {
-//            singleValueTypePopUp("Please enter the annual rainfall  value", areaValue) { newValue ->
-//                annunal_RainfallValue = newValue
-//                Log.d("rk", annunal_RainfallValue.toString())
-//                binding.annunalRainfallValue.text=annunal_RainfallValue.toString()
-//            }
-//        }
-        binding.fertilizerValue.setOnClickListener {
+        binding.rainfallCardView.setOnClickListener {
+            singleValueTypePopUp("Please enter the annual rainfall  value", areaValue) { newValue ->
+                annunal_RainfallValue = newValue
+                Log.d("rk", annunal_RainfallValue.toString())
+                binding.rainfallValue.text=annunal_RainfallValue.toString()
+            }
+        }
+        binding.fertilizerCardView.setOnClickListener {
             singleValueTypePopUp("Please enter the fertilizer value", areaValue) { newValue ->
                 fertilizerValue = newValue
                 Log.d("rk", fertilizerValue.toString())
-                binding.fertilizerValue1.text=fertilizerValue.toString()
+                binding.fertilizerValue.text=fertilizerValue.toString()
             }
         }
-        binding.yeildValue.setOnClickListener {
+        binding.yieldCardView.setOnClickListener {
             singleValueTypePopUp("Please enter the yeild value", areaValue) { newValue ->
                 yeildValue = newValue
                 Log.d("rk", yeildValue.toString())
-                binding.yeildValue1.text=yeildValue.toString()
+                binding.yieldValue.text=yeildValue.toString()
             }
         }
 
         binding.predictYield.setOnClickListener {
             showProgressbar()
             viewModel.rainfall(requireContext(),RainfallInputModel(stateList[stateValue],seasonList[seasonValue]),this)
-//
         }
-
         viewModel.observe_cropPrediction().observe(requireActivity(), Observer { res->
             cancelProgressbar()
             if(res.isSuccessful)
@@ -211,6 +209,7 @@ class CropPrediction : Fragment() {
             {
                 annunal_RainfallValue = res.body()!!.total_avg!!.toInt()
                 Log.d("rk",annunal_RainfallValue.toString())
+                binding.rainfallValue.text=annunal_RainfallValue.toString()
                 if(seasonValue!=-1 && stateValue!=-1 && areaValue!=-1 && annunal_RainfallValue!=-1 && fertilizerValue!=-1 && yeildValue!=-1 )
                 {
                     showProgressbar()

@@ -67,12 +67,10 @@ class APIViewModel : ViewModel() {
     fun observe_registerNewUser(): LiveData<Response<FertilizerOutputModel>> = result_fertilizer
 
 
-
-
     var result_yeild  : MutableLiveData<Response<YeidlOutputModel>> = MutableLiveData()
     fun yeild(context: Context,input: YeildInputModel,fragment:CropYieldPrediction) {
         if (checkForInternet1(context)) {
-            val matchApi = Constants.getInstance1().create(ApiService::class.java)
+            val matchApi = Constants.getInstance().create(ApiService::class.java)
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val result = matchApi.cropYield(input)
@@ -101,7 +99,7 @@ class APIViewModel : ViewModel() {
     var result_cropProduction  : MutableLiveData<Response<CropPridictionOutputModel>> = MutableLiveData()
     fun cropPrediction(context: Context,input: CropPredictionInputModel,fragment:CropPrediction) {
         if (checkForInternet1(context)) {
-            val matchApi = Constants.getInstance1().create(ApiService::class.java)
+            val matchApi = Constants.getInstance().create(ApiService::class.java)
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val result = matchApi.cropPrediction(input)
@@ -130,7 +128,7 @@ class APIViewModel : ViewModel() {
     var result_rainfall  : MutableLiveData<Response<RainfallOutputModel>> = MutableLiveData()
     fun rainfall(context: Context, input: RainfallInputModel, fragment:CropPrediction) {
         if (checkForInternet1(context)) {
-            val matchApi = Constants.getInstance2().create(ApiService::class.java)
+            val matchApi = Constants.getInstance().create(ApiService::class.java)
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val result = matchApi.rainfall(input)
@@ -155,40 +153,6 @@ class APIViewModel : ViewModel() {
     }
     fun observe_rainfall(): LiveData<Response<RainfallOutputModel>> = result_rainfall
 
-    var result_pest  : MutableLiveData<Response<PestPredictionOutputModel>> = MutableLiveData()
-    fun pest(context: Context, input: PestDetectionInputModel, fragment:PestDetection) {
-        if (checkForInternet1(context)) {
-            val matchApi = Constants.getInstance3().create(ApiService::class.java)
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    val result = matchApi.pest(input)
-                    Log.d("rk",result.toString() )
-                    withContext(Dispatchers.Main) {
-                        if (result.isSuccessful) {
-                            result_pest.value = result
-                            fragment.errorFn(result.body()!!.pest.toString())
-                        } else {
-                            val errorBody = result.errorBody()?.string()
-                            Log.d("rk",errorBody.toString())
-                            val errorMessage = parseErrorMessage(errorBody)
-                            fragment.errorFn(errorMessage ?: "Unknown error")
-                        }
-                    }
-                } catch (e: Exception) {
-                    Log.e("rk", "Exception: ${e.message}")
-                    fragment.errorFn("Registration failed. Please check your internet connection and try again.")
-                }
-            }
-        } else {
-            fragment.errorFn("Please switch on your internet and retry")
-        }
-    }
-    fun observe_pest(): LiveData<Response<PestPredictionOutputModel>> = result_pest
-
-
-
-
-
 
     private fun parseErrorMessage(errorBody: String?): String? {
         errorBody?.let {
@@ -200,25 +164,6 @@ class APIViewModel : ViewModel() {
             }
         }
         return null
-    }
-    private fun checkForInternet(context: Activity): Boolean
-    {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val network = connectivityManager.activeNetwork ?: return false
-            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-
-            return when {
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                else -> false
-            }
-        } else {
-            @Suppress("DEPRECATION") val networkInfo =
-                connectivityManager.activeNetworkInfo ?: return false
-            @Suppress("DEPRECATION")
-            return networkInfo.isConnected
-        }
     }
     private fun checkForInternet1(context: Context): Boolean
     {

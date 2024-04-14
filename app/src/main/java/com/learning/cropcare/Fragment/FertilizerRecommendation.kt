@@ -76,60 +76,60 @@ class FertilizerRecommendation : Fragment() {
         val soilList: ArrayList<String> = ArrayList(soilTypeMap.keys)
         val fertilizerList: ArrayList<String> = ArrayList(fertilizerTypeMap.keys)
 
-        binding.tempValue.setOnClickListener {
+        binding.tempCardView.setOnClickListener {
             singleValueTypePopUp("Please enter the temperature value", tempValue) { newValue ->
                 tempValue = newValue
                 Log.d("rk", tempValue.toString())
-                binding.tempValue1.text="Temperature : ${tempValue.toString()}"
+                binding.tempValue.text="${tempValue}"
             }
         }
-        binding.humidityValue.setOnClickListener {
+        binding.humidityCardView.setOnClickListener {
             singleValueTypePopUp("Please enter the humidity value", tempValue) { newValue ->
                 humidityValue = newValue
                 Log.d("rk", humidityValue.toString())
-                binding.humidityValue1.text="Humidity : ${ humidityValue.toString()}"
+                binding.humidityValue.text="${ humidityValue}"
             }
         }
-        binding.moistureValue.setOnClickListener {
+        binding.moistureCardView.setOnClickListener {
             singleValueTypePopUp("Please enter the moisture value", tempValue) { newValue ->
                 moistureValue = newValue
                 Log.d("rk", moistureValue.toString())
-                binding.moistureValue1.text="Moisture : ${moistureValue.toString()}"
+                binding.moistureValue.text="${moistureValue}"
             }
         }
-        binding.nitrogenValue.setOnClickListener {
+        binding.nitrogenCardView.setOnClickListener {
             singleValueTypePopUp("Please enter the nitrogen value", tempValue) { newValue ->
                 nitrogenValue = newValue
                 Log.d("rk", nitrogenValue.toString())
-                binding.nitrogenValue1.text="Nitrogen : ${ nitrogenValue.toString()}"
+                binding.nitrogenValue.text="${ nitrogenValue}"
             }
         }
-        binding.potassiumValue.setOnClickListener {
+        binding.potassiumCardView.setOnClickListener {
             singleValueTypePopUp("Please enter the potassium value", tempValue) { newValue ->
                 potassiumValue = newValue
                 Log.d("rk", potassiumValue.toString())
-                binding.potassiumValue1.text="Potassium : ${  potassiumValue.toString()}"
+                binding.pottasiumValue.text="${potassiumValue}"
             }
         }
-        binding.phosphorousValue.setOnClickListener {
+        binding.phosphorousCardView.setOnClickListener {
             singleValueTypePopUp("Please enter the phosphorous value", tempValue) { newValue ->
                 phospherousValue = newValue
                 Log.d("rk", phospherousValue.toString())
-                binding.phosphorousValue1.text="Phosphorous : ${ phospherousValue.toString()}"
+                binding.phosphorrusValue.text="${ phospherousValue}"
             }
         }
-        binding.soilTypeValue.setOnClickListener {
+        binding.soilTypeCardView.setOnClickListener {
             singleValueChoosePopUp("Please choose one soil value",soilList) { newValue ->
                 soilValue = newValue
                 Log.d("rk", soilValue.toString())
-                binding.soilTypeValue1.text="Soil : ${soilList[soilValue]}"
+                binding.soilTypeValue.text="${soilList[soilValue]}"
             }
         }
-        binding.cropValue.setOnClickListener {
+        binding.cropTypeCardView.setOnClickListener {
             singleValueChoosePopUp("Please choose one crop value",cropNamesList) { newValue ->
                 cropValue = newValue
                 Log.d("rk", cropValue.toString())
-                binding.cropValue1.text="Crop : ${cropNamesList[cropValue]}"
+                binding.cropTypeValue.text="${cropNamesList[cropValue]}"
             }
         }
         try {
