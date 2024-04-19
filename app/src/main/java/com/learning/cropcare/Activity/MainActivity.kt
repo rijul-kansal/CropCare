@@ -1,6 +1,11 @@
 package com.learning.cropcare.Activity
 
+import android.app.ActivityManager
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -12,18 +17,18 @@ import com.learning.cropcare.Fragment.CropPrediction
 import com.learning.cropcare.Fragment.CropYieldPrediction
 import com.learning.cropcare.Fragment.FertilizerRecommendation
 import com.learning.cropcare.Fragment.PestDetection
+import com.learning.cropcare.Fragment.Profile
 import com.learning.cropcare.R
+import com.learning.cropcare.ViewModel.AuthenticationViewModel
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // TODO Language
-        // TODO GPS
-        // TODO UI Update
+        //  TODO BOT
         // TODO MODEL Deployment
-        // TODO PDF of Hisotory
+        // TODO PDF of History
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -63,19 +68,59 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .replace(R.id.fragment_container, PestDetection()).commit()
                 supportActionBar?.setTitle("Pest Detection")
             }
-//            R.id.nav_about -> supportFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, AboutFragment()).commit()
-//            R.id.nav_logout -> Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show()
+            R.id.profile->{
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, Profile()).commit()
+                supportActionBar?.setTitle("Profile")
+            }
+            R.id.logout->{
+                AuthenticationViewModel().SignOut()
+                startActivity(Intent(this,IntroActivity::class.java))
+                finish()
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
     override fun onBackPressed() {
-        super.onBackPressed()
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+
             drawerLayout.closeDrawer(GravityCompat.START)
+        } else if (isOnlyOneActivityInStack()) {
+
+            showBackBtnDialog()
         } else {
-            onBackPressedDispatcher.onBackPressed()
+            
+            Log.d("rk", "More than one activity in the stack")
+            super.onBackPressed()
         }
+    }
+
+    private fun isOnlyOneActivityInStack(): Boolean {
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val tasks = activityManager.appTasks
+        for (task in tasks) {
+            val taskInfo = task.taskInfo
+            if (taskInfo.numActivities == 1) {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun showBackBtnDialog()
+    {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder
+            .setMessage("Want to exit the App")
+            .setPositiveButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            .setNegativeButton("Exit") { dialog, which ->
+                finish()
+            }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 }

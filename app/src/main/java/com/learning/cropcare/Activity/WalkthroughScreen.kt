@@ -31,7 +31,7 @@ class WalkthroughScreen : AppCompatActivity() {
         try {
             val sharedPreference =  getSharedPreferences(Constants.LANGUAGE, Context.MODE_PRIVATE)
             languagechoosen=sharedPreference.getString("language","english")
-            Log.d("rk","languiageChoosen $languagechoosen")
+            Log.d("rk","languageChosen $languagechoosen")
             if(languagechoosen=="english")
             {
                 populateData()
@@ -49,12 +49,14 @@ class WalkthroughScreen : AppCompatActivity() {
                     binding.slideViewPager.setCurrentItem(getItem(1), true)
                 } else {
                     val i = Intent(this, IntroActivity::class.java)
+                    i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(i)
                     finish()
                 }
             }
             binding.skipButton.setOnClickListener {
                 val i = Intent(this, IntroActivity::class.java)
+                i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(i)
                 finish()
             }
@@ -112,7 +114,7 @@ class WalkthroughScreen : AppCompatActivity() {
 
     fun populateData() {
         images.add( R.drawable.crop_prediction1)
-        images.add( R.drawable.crop_yeild_prediction)
+        images.add( R.drawable.crop_yield_prediction)
         images.add( R.drawable.fertilizer)
         images.add( R.drawable.img_4)
 
@@ -129,7 +131,7 @@ class WalkthroughScreen : AppCompatActivity() {
     }
     fun populateData2() {
         images.add( R.drawable.crop_prediction1)
-        images.add( R.drawable.crop_yeild_prediction)
+        images.add( R.drawable.crop_yield_prediction)
         images.add( R.drawable.fertilizer)
         images.add( R.drawable.img_4)
 

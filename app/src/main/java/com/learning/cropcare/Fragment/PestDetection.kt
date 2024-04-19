@@ -105,7 +105,7 @@ class PestDetection : Fragment() {
                     binding.enjoy.setImageURI(null)
                     binding.enjoy.setImageURI(imageUri)
                     showProgressbar()
-                    viewModel.uploadImage(requireContext(),this,imageUri)
+                   // viewModel.uploadImage(requireContext(),this,imageUri)
 //                    Handler().postDelayed({
 //                        viewModel1.pest(requireContext(), PestDetectionInputModel(imageUri),this)
 //                    },3000)
@@ -271,7 +271,7 @@ class PestDetection : Fragment() {
                 imageUri = data?.data!!
                 showProgressbar()
                 try {
-                    viewModel.uploadImage(requireContext(),this,imageUri)
+//                    viewModel.uploadImage(requireContext(),this,imageUri)
                      Log.d("rk","final url ${imageUri}")
 //                    Handler().postDelayed({
 //                        viewModel1.pest(requireContext(), PestDetectionInputModel(imageUri),this)

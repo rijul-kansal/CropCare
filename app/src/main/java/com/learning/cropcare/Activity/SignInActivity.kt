@@ -13,12 +13,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.learning.cropcare.Utils.BaseActivity
 import com.learning.cropcare.Utils.Constants
 import com.learning.cropcare.ViewModel.AuthenticationViewModel
+import com.learning.cropcare.ViewModel.FireStoreDataBaseViewModel
+import com.learning.cropcare.ViewModel.StorageViewModel
 import com.learning.cropcare.databinding.ActivitySignInBinding
 
 class SignInActivity : BaseActivity() {
     lateinit var binding: ActivitySignInBinding
 
     lateinit var viewModel: AuthenticationViewModel
+    lateinit var viewModel1: FireStoreDataBaseViewModel
+    lateinit var viewModel2: StorageViewModel
     lateinit var email:String
     lateinit var password:String
     lateinit var name:String
@@ -32,6 +36,7 @@ class SignInActivity : BaseActivity() {
         charByCharDisplay(binding.signInGeneral.text.toString(),binding.signInGeneral)
 
         viewModel= ViewModelProvider(this)[AuthenticationViewModel::class.java]
+        viewModel1= ViewModelProvider(this)[FireStoreDataBaseViewModel::class.java]
         try {
             binding.mobileAuth.setOnClickListener {
                 var intent=Intent(this,MobileNumberSignInActivity::class.java)
@@ -47,6 +52,12 @@ class SignInActivity : BaseActivity() {
             if(intent.hasExtra(Constants.NAME))
             {
                 name=intent.getStringExtra(Constants.NAME).toString()
+                val hash= hashMapOf("name" to name,"email" to email,"mobilenumber" to "","image" to "")
+                viewModel1.addUserProfileData(this,hash)
+                var arr : ArrayList<String> = ArrayList()
+                arr.add("Initial")
+                var data= hashMapOf("array" to arr)
+                viewModel1.addDataToHistoryintial(this,data)
             }
             binding.etEmail.setText(email)
             binding.etPassword.setText(password)
@@ -113,7 +124,9 @@ class SignInActivity : BaseActivity() {
                 if(task.isSuccessful)
                 {
                     Toast(this,"user Login In successfully")
-                    startActivity(Intent(this,MainActivity::class.java))
+                    var i=Intent(this,MainActivity::class.java)
+                    i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(i)
                     finish()
                 }
                 else
@@ -160,5 +173,11 @@ class SignInActivity : BaseActivity() {
                 }
             }
         })
+    }
+
+    fun errorFn(message:String)
+    {
+        cancelProgressBar()
+        Toast(this,message)
     }
 }

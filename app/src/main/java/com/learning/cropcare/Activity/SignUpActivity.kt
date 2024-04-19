@@ -139,5 +139,10 @@ class SignUpActivity : BaseActivity() {
         })
     }
 
+    fun errorFn(message:String)
+    {
+        cancelProgressBar()
+        Toast(this,message)
+    }
 
 }

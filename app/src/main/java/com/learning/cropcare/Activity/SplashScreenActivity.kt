@@ -16,11 +16,11 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
         var mAuth=FirebaseAuth.getInstance().currentUser
         Handler().postDelayed({
-            if(mAuth!=null )
+            if(mAuth!=null)
             {
-                if(mAuth.email!=null && mAuth.email.toString().length>0)
+                if(mAuth.email!=null && mAuth.email.toString().length>0 || mAuth.phoneNumber!=null)
                 {
-                    if(mAuth.isEmailVerified)
+                    if(mAuth.isEmailVerified || mAuth.phoneNumber!=null)
                     {
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()
@@ -31,16 +31,8 @@ class SplashScreenActivity : AppCompatActivity() {
                         finish()
                     }
                 }
-                else
-                {
-                    if(mAuth.phoneNumber!=null)
-                    {
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    }
-                }
             }
-            else
+            else if(mAuth==null)
             {
                 startActivity(Intent(this, LanguageActivity::class.java))
                 finish()

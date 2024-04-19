@@ -11,6 +11,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.storage.storage
 import com.learning.agrovision.Model.RainfallOutputModel
 import com.learning.cropcare.Fragment.PestDetection
+import com.learning.cropcare.Fragment.Profile
 import com.learning.cropcare.Model.PestDetectionInputModel
 import com.learning.cropcare.Model.PestPredictionOutputModel
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +24,7 @@ class StorageViewModel : ViewModel() {
     private var downloadUri: MutableLiveData<Uri> = MutableLiveData()
 
 
-    fun uploadImage(context: Context, fragment:PestDetection, fileUri : Uri) {
+    fun uploadImage(context: Context, fragment:Profile, fileUri : Uri) {
         viewModelScope.launch(Dispatchers.IO)
         {
             val ref = storageRef.child("UserImages/${fileUri.lastPathSegment}")
@@ -39,16 +40,9 @@ class StorageViewModel : ViewModel() {
                 ref.downloadUrl
 
             }.addOnCompleteListener { task ->
-                fragment.cancelProgressbar()
                 if (task.isSuccessful) {
                     downloadUri.value = task.result
                     Log.d("rk","final "+downloadUri.toString())
-                    val uri: Uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/crop-care-b1ede.appspot.com/o/UserImages%2F1000115795?alt=media&token=1c585f57-336d-443f-bfe3-b2924570937e")
-
-//                    APIViewModel().pest(context, PestDetectionInputModel(uri),fragment)
-                    val valuee=downloadUri.toString()
-                    val map= HashMap<String,String>()
-                    map["image"] = valuee
                 } else {
 
                 }

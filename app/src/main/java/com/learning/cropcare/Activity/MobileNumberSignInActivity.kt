@@ -21,17 +21,19 @@ import com.learning.cropcare.R
 import com.learning.cropcare.Utils.BaseActivity
 import com.learning.cropcare.Utils.Constants
 import com.learning.cropcare.ViewModel.AuthenticationViewModel
+import com.learning.cropcare.ViewModel.FireStoreDataBaseViewModel
 import com.learning.cropcare.databinding.ActivityMobileNumberSignInBinding
 
 class MobileNumberSignInActivity : BaseActivity() {
     lateinit var viewModel: AuthenticationViewModel
+    lateinit var viewModel1: FireStoreDataBaseViewModel
     lateinit var binding:ActivityMobileNumberSignInBinding
     lateinit var storedVerificationId:String
     lateinit var resendToken:PhoneAuthProvider.ForceResendingToken
     var otpDialog:Dialog?=null
-    var name:String?=null
+    lateinit var name:String
     var countryCode:String?=null
-    var mobileNumber:String?=null
+    lateinit var mobileNumber:String
     lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     var signUpOrSignIn:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +45,9 @@ class MobileNumberSignInActivity : BaseActivity() {
 
             if(signUpOrSignIn=="signIn")
             {
+                binding.etName.visibility=View.INVISIBLE
+                binding.textInputLayout.visibility=View.INVISIBLE
+                binding.etName.setText("a12345")
                 binding.generaltv.text="Sign in to continue"
                 binding.SignUpBtn.text="Sign In"
             }
@@ -61,6 +66,7 @@ class MobileNumberSignInActivity : BaseActivity() {
 
             }
             viewModel= ViewModelProvider(this)[AuthenticationViewModel::class.java]
+            viewModel1= ViewModelProvider(this)[FireStoreDataBaseViewModel::class.java]
             charByCharDisplay(binding.generaltv.text.toString(),binding.generaltv)
             callBackForAuth()
             binding.SignUpBtn.setOnClickListener {
@@ -79,7 +85,20 @@ class MobileNumberSignInActivity : BaseActivity() {
                 if(task.isSuccessful)
                 {
                     otpDialog!!.dismiss()
-                    startActivity(Intent(this,MainActivity::class.java))
+                    if(signUpOrSignIn=="signIn")
+                    {
+
+                    }else{
+                        val c=hashMapOf("name" to name ,"mobilenumber" to mobileNumber, "email" to "","image" to "")
+                        viewModel1.addUserProfileData(this,c)
+                        var arr : ArrayList<String> = ArrayList()
+                        arr.add("Initial")
+                        var data= hashMapOf("array" to arr)
+                        viewModel1.addDataToHistoryintial(this,data)
+                    }
+                    var i=Intent(this,MainActivity::class.java)
+                    i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(i)
                     finish();
                 }
                 else
@@ -176,5 +195,10 @@ class MobileNumberSignInActivity : BaseActivity() {
                 }
             }
         })
+    }
+    fun errorFn(message:String)
+    {
+        cancelProgressBar()
+        Toast(this,message)
     }
 }
