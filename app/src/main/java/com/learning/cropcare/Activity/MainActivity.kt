@@ -5,8 +5,11 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -16,13 +19,17 @@ import com.google.android.material.navigation.NavigationView
 import com.learning.cropcare.Fragment.CropPrediction
 import com.learning.cropcare.Fragment.CropYieldPrediction
 import com.learning.cropcare.Fragment.FertilizerRecommendation
+import com.learning.cropcare.Fragment.History
 import com.learning.cropcare.Fragment.PestDetection
 import com.learning.cropcare.Fragment.Profile
 import com.learning.cropcare.R
+import com.learning.cropcare.Utils.Constants
 import com.learning.cropcare.ViewModel.AuthenticationViewModel
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
+    var doubleBackToExitPressedOnce = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -78,6 +85,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this,IntroActivity::class.java))
                 finish()
             }
+            R.id.language->{
+                var intent =Intent(this,LanguageActivity::class.java)
+                intent.putExtra(Constants.START_LANGUAGE_CHOSEN_OR_NOT,"no")
+                startActivity(intent)
+            }
+            R.id.history->{
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, History()).commit()
+                supportActionBar?.setTitle("History")
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -87,10 +104,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             drawerLayout.closeDrawer(GravityCompat.START)
         } else if (isOnlyOneActivityInStack()) {
+            if (doubleBackToExitPressedOnce) {
+                showBackBtnDialog()
+                return
+            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, CropPrediction()).commit()
+            supportActionBar?.setTitle("Crop Prediction")
+            this.doubleBackToExitPressedOnce = true
+            Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                doubleBackToExitPressedOnce = false
+            }, 2000)
 
-            showBackBtnDialog()
         } else {
-            
+
             Log.d("rk", "More than one activity in the stack")
             super.onBackPressed()
         }

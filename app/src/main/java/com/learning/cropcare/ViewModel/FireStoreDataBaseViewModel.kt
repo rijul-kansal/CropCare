@@ -20,9 +20,9 @@ import com.learning.cropcare.Activity.SignInActivity
 import com.learning.cropcare.Fragment.CropPrediction
 import com.learning.cropcare.Fragment.CropYieldPrediction
 import com.learning.cropcare.Fragment.FertilizerRecommendation
+import com.learning.cropcare.Fragment.History
 import com.learning.cropcare.Fragment.PestDetection
 import com.learning.cropcare.Fragment.Profile
-import com.learning.cropcare.Model.UserProfileDataOutputModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -101,7 +101,7 @@ class FireStoreDataBaseViewModel : ViewModel() {
 
     }
 
-    fun addDataToHistorymain(context: Context, fragment: Fragment,data:String)
+    fun addDataToHistorymain(context: Context, fragment: Fragment, data: HashMap<String, String>)
     {
         if(checkForInternet1(context))
         {
@@ -134,7 +134,7 @@ class FireStoreDataBaseViewModel : ViewModel() {
         }
     }
 
-    fun addDataToHistoryintial(activity:Activity,data:Map<String,ArrayList<String>>)
+    fun addDataToHistoryintial(activity:Activity, data: Map<String,ArrayList<Map<String,String>>>)
     {
         if(checkForInternet1(activity))
         {
@@ -158,6 +158,37 @@ class FireStoreDataBaseViewModel : ViewModel() {
         }
     }
 
+    var getUserHistoryDataResult:MutableLiveData<Map<String,ArrayList<Map<String,String>>>> = MutableLiveData()
+    fun getUserHistoryData(context: Context,fragment:History)
+    {
+        if(checkForInternet1(context))
+        {
+            try {
+                val docRef = db.collection("UserHistory").document(AuthenticationViewModel().getUserId())
+                docRef.get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            var res=document.data as Map<String,ArrayList<Map<String,String>>>
+                            getUserHistoryDataResult.value=res
+                        } else {
+                            fragment.errorFn("Something went wrong try after some time")
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        fragment.errorFn(exception.toString())
+                    }
+            }catch (e:Exception)
+            {
+                Log.d("rk",e.message.toString())
+            }
+
+        }
+        else
+        {
+            fragment.errorFn("switch on your internet")
+        }
+    }
+    fun observeUserHistoryData():LiveData<Map<String,ArrayList<Map<String,String>>>> = getUserHistoryDataResult
     private fun checkForInternet1(context: Context): Boolean
     {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

@@ -1,6 +1,7 @@
 package com.learning.cropcare.Fragment
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -11,16 +12,22 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.learning.agrovision.Model.FertilizerInputModel
 import com.learning.cropcare.R
 import com.learning.cropcare.ViewModel.APIViewModel
+import com.learning.cropcare.ViewModel.FireStoreDataBaseViewModel
 import com.learning.cropcare.databinding.FragmentFertilizerRecommendationBinding
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 
 class FertilizerRecommendation : Fragment() {
     lateinit var viewModel:APIViewModel
+    lateinit var viewModel1:FireStoreDataBaseViewModel
     var dialog: Dialog?=null
     var tempValue:Int=-1
     var humidityValue:Int=-1
@@ -38,11 +45,13 @@ class FertilizerRecommendation : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(requireActivity())[APIViewModel::class.java]
+        viewModel1 = ViewModelProvider(requireActivity())[FireStoreDataBaseViewModel::class.java]
         val soilTypeMap = mapOf(
             "Black" to 0,
             "Clayey" to 1,
@@ -149,6 +158,19 @@ class FertilizerRecommendation : Fragment() {
                 cancelProgressbar()
                 if(res.isSuccessful)
                 {
+                    var map : HashMap<String,String> = HashMap()
+                    map["date"] = dataInHumanReadableFormat()
+                    map["value"] = "Fertilizer Recommendation"
+                    map["Temperature"] = tempValue.toString()
+                    map["Humidity"] = humidityValue.toString()
+                    map["Moisture"] = moistureValue.toString()
+                    map["Soil Type"] = soilList[soilValue]
+                    map["Crop Type"] = cropNamesList[cropValue]
+                    map["Nitrogen"] = nitrogenValue.toString()
+                    map["Potassium"] = potassiumValue.toString()
+                    map["Phosphorous"] = phospherousValue.toString()
+                    map["result"] = "The recommended fertilizer is ${fertilizerList[res.body()!!.prediction?.get(0)!!]}"
+                    viewModel1.addDataToHistorymain(requireContext(),this,map)
                     res.body()!!.prediction?.get(0)?.let { Log.d("rk", it.toString()) }
                     binding.value.text= "The recommended fertilizer is ${fertilizerList[res.body()!!.prediction?.get(0)!!]}"
                 }
@@ -235,5 +257,13 @@ class FertilizerRecommendation : Fragment() {
             dialog!!.cancel()
             dialog=null
         }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun dataInHumanReadableFormat():String
+    {
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val formattedDate = current.format(formatter)
+        return formattedDate.toString()
     }
 }

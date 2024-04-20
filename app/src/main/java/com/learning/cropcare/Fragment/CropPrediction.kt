@@ -1,6 +1,7 @@
 package com.learning.cropcare.Fragment
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -11,19 +12,24 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.learning.agrovision.Model.CropPredictionInputModel
 import com.learning.agrovision.Model.RainfallInputModel
 import com.learning.cropcare.R
 import com.learning.cropcare.ViewModel.APIViewModel
+import com.learning.cropcare.ViewModel.FireStoreDataBaseViewModel
 import com.learning.cropcare.databinding.FragmentCropPredictionBinding
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class CropPrediction : Fragment() {
     var dialog: Dialog?=null
     lateinit var binding: FragmentCropPredictionBinding
     lateinit var viewModel: APIViewModel
+    lateinit var viewModel1: FireStoreDataBaseViewModel
     lateinit var singleValueTypePopUp: Dialog
 
     var seasonValue :Int=-1
@@ -38,12 +44,14 @@ class CropPrediction : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         viewModel= ViewModelProvider(requireActivity())[APIViewModel::class.java]
+        viewModel1= ViewModelProvider(requireActivity())[FireStoreDataBaseViewModel::class.java]
         val cropMappings = mapOf(
             "Arecanut" to 0,
             "Arhar/Tur" to 1,
@@ -196,6 +204,17 @@ class CropPrediction : Fragment() {
             cancelProgressbar()
             if(res.isSuccessful)
             {
+                var map : HashMap<String,String> = HashMap()
+
+                map["date"] = dataInHumanReadableFormat()
+                map["value"] = "Crop Prediction"
+                map["seasonValue"] = seasonList[seasonValue]
+                map["stateValue"] = stateList[stateValue]
+                map["annual_rainfall"] = annunal_RainfallValue.toString()
+                map["fertilizerValue"] = fertilizerValue.toString()
+                map["yieldValue"] = yeildValue.toString()
+                map["result"] = "The crop  ${cropList[res.body()!!.prediction?.get(0)!!]}"
+                viewModel1.addDataToHistorymain(requireContext(),this,map)
                 res.body()!!.prediction?.get(0)?.let { Log.d("rkk","value" +it.toString()) }
                 binding.value.text= "The crop  ${cropList[res.body()!!.prediction?.get(0)!!]}"
             }
@@ -305,5 +324,11 @@ class CropPrediction : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun dataInHumanReadableFormat(): String {
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        return current.format(formatter)
+    }
 
 }

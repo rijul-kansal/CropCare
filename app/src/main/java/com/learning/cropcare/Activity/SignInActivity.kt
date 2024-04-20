@@ -54,10 +54,13 @@ class SignInActivity : BaseActivity() {
                 name=intent.getStringExtra(Constants.NAME).toString()
                 val hash= hashMapOf("name" to name,"email" to email,"mobilenumber" to "","image" to "")
                 viewModel1.addUserProfileData(this,hash)
-                var arr : ArrayList<String> = ArrayList()
-                arr.add("Initial")
-                var data= hashMapOf("array" to arr)
-                viewModel1.addDataToHistoryintial(this,data)
+                var arr : MutableMap<String,ArrayList<Map<String,String>>> = HashMap()
+                val arrayList = ArrayList<Map<String, String>>()
+                val innerMap = HashMap<String, String>()
+                innerMap["innerKey1"] = "innerValue1"
+                arrayList.add(innerMap)
+                arr["array"] = arrayList
+                viewModel1.addDataToHistoryintial(this,arr)
             }
             binding.etEmail.setText(email)
             binding.etPassword.setText(password)

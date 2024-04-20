@@ -18,11 +18,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.learning.agrovision.Model.YeildInputModel
 import com.learning.cropcare.R
 import com.learning.cropcare.ViewModel.APIViewModel
+import com.learning.cropcare.ViewModel.FireStoreDataBaseViewModel
 import com.learning.cropcare.databinding.FragmentCropYieldPredictionBinding
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 class CropYieldPrediction : Fragment() {
     lateinit var viewModel: APIViewModel
+    lateinit var viewModel1: FireStoreDataBaseViewModel
     var dialog: Dialog?=null
     val statesArrayList = ArrayList<String>()
     val cropsArrayList = ArrayList<String>()
@@ -47,6 +52,7 @@ class CropYieldPrediction : Fragment() {
     ): View {
         try {
             viewModel= ViewModelProvider(this)[APIViewModel::class.java]
+            viewModel1= ViewModelProvider(this)[FireStoreDataBaseViewModel::class.java]
             stateArrFn()
             cropArrFn()
             seasonArrFn()
@@ -100,6 +106,15 @@ class CropYieldPrediction : Fragment() {
                 cancelProgressbar()
                 if(res.isSuccessful)
                 {
+                    var map : HashMap<String,String> = HashMap()
+                    map["date"] = dataInHumanReadableFormat()
+                    map["value"] = "Crop Yield Prediction"
+                    map["seasonValue"] = seasonsArrayList[seasonValue]
+                    map["stateValue"] = statesArrayList[stateValue]
+                    map["areaValue"] = areaValue.toString()
+                    map["cropValue"] = cropValue.toString()
+                    map["result"] = "The production in  tone is  ${res.body()!!.prediction?.get(0)!!}"
+                    viewModel1.addDataToHistorymain(requireContext(),this,map)
                     res.body()!!.prediction?.get(0)?.let { Log.d("rkk","value" +it.toString()) }
                     binding.value.text= "The production in  tone is  ${res.body()!!.prediction?.get(0)!!}"
                 }
@@ -259,6 +274,14 @@ class CropYieldPrediction : Fragment() {
             dialog!!.cancel()
             dialog=null
         }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun dataInHumanReadableFormat():String
+    {
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val formattedDate = current.format(formatter)
+        return formattedDate.toString()
     }
 
 }

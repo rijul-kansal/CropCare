@@ -17,13 +17,18 @@ class LanguageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
+        var startactivityornot=intent.getStringExtra(Constants.START_LANGUAGE_CHOSEN_OR_NOT).toString()
         binding.englishBtn.setOnClickListener {
             val sharedPreference =  getSharedPreferences(Constants.LANGUAGE, Context.MODE_PRIVATE)
             var editor = sharedPreference.edit()
             editor.putString("language","english")
             editor.putLong("l",100L)
             editor.commit()
+            if(startactivityornot=="no")
+            {
+                finish()
+            }
+            else
             startActivity(Intent(this,WalkthroughScreen::class.java))
         }
         binding.hindiBtn.setOnClickListener {

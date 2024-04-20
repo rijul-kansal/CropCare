@@ -8,6 +8,7 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.learning.cropcare.R
+import com.learning.cropcare.Utils.Constants
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -34,7 +35,9 @@ class SplashScreenActivity : AppCompatActivity() {
             }
             else if(mAuth==null)
             {
-                startActivity(Intent(this, LanguageActivity::class.java))
+                var intent =Intent(this, LanguageActivity::class.java)
+                intent.putExtra(Constants.START_LANGUAGE_CHOSEN_OR_NOT,"yes")
+                startActivity(intent)
                 finish()
 
             }
