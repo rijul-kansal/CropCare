@@ -4,15 +4,18 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.learning.cropcare.Activity.InDetailHistory
 import com.learning.cropcare.Adapter.HistorySummaryAdapter
 import com.learning.cropcare.Model.HistorySummaryOutputModel
+import com.learning.cropcare.Utils.Constants
 import com.learning.cropcare.ViewModel.FireStoreDataBaseViewModel
 import com.learning.cropcare.databinding.FragmentHistoryBinding
 
@@ -21,7 +24,7 @@ class History : Fragment() {
 
     lateinit var binding:FragmentHistoryBinding
     lateinit var viewModel:FireStoreDataBaseViewModel
-    var allHistodauyDetail: Map<String, ArrayList<Map<String, String>>>?=null
+    var allHistodauyDetail: ArrayList<Map<String, String>>?=null
     var dialog: Dialog?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         binding= FragmentHistoryBinding.inflate(layoutInflater)
@@ -43,7 +46,7 @@ class History : Fragment() {
             cancelProgressbar()
             if(res!=null)
             {
-                allHistodauyDetail=res
+                allHistodauyDetail=res["array"]
                 var historySummaryDisplay :ArrayList<HistorySummaryOutputModel> = ArrayList()
                 try {
                     val arr = res["array"]
@@ -102,8 +105,15 @@ class History : Fragment() {
         ItemAdapter.setOnClickListener(object :
             HistorySummaryAdapter.OnClickListener {
             override fun onClick(position: Int, model: HistorySummaryOutputModel) {
-//                Log.d("rk",model.name.toString())
-
+                Log.d("rk",model.title.toString())
+                Log.d("rk",position.toString())
+                allHistodauyDetail?.get(position+1)?.get("value")?.let { Log.d("rk", it) }
+                var arr= allHistodauyDetail!![position+1]
+                val gson = Gson()
+                val dataString = gson.toJson(arr)
+                var intent=Intent(activity,InDetailHistory::class.java)
+                intent.putExtra(Constants.HISTORY,dataString)
+                startActivity(intent)
             }
         })
     }

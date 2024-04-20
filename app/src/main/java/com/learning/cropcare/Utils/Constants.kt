@@ -12,6 +12,7 @@ object Constants {
     const val BASE_URL ="https://3a81-34-86-25-235.ngrok-free.app"
     const val SIGNUP_OR_SIGN_IN="signinorsignup"
     const val START_LANGUAGE_CHOSEN_OR_NOT="start language chosen or not "
+    const val HISTORY="history"
     // for model + rainfall
     fun getInstance() : Retrofit {
         return Retrofit.Builder()
