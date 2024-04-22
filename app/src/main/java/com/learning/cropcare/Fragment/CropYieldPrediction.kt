@@ -1,8 +1,16 @@
 package com.learning.cropcare.Fragment
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -13,9 +21,16 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.learning.agrovision.Model.YeildInputModel
+import com.learning.cropcare.Model.ReverseGeoCode.LocationInputModel
 import com.learning.cropcare.R
 import com.learning.cropcare.ViewModel.APIViewModel
 import com.learning.cropcare.ViewModel.FireStoreDataBaseViewModel
@@ -39,6 +54,14 @@ class CropYieldPrediction : Fragment() {
     var yearValue:Int=-1
     var seasonValue:Int=-1
     lateinit var binding:FragmentCropYieldPredictionBinding
+
+
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private val permissionId = 2
+    private lateinit var locationCallback: LocationCallback
+
+    var latitude:Double?=null
+    var longitude:Double?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         binding= FragmentCropYieldPredictionBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -53,9 +76,68 @@ class CropYieldPrediction : Fragment() {
         try {
             viewModel= ViewModelProvider(this)[APIViewModel::class.java]
             viewModel1= ViewModelProvider(this)[FireStoreDataBaseViewModel::class.java]
+
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+            locationCallback = object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult?) {
+                    locationResult ?: return
+                    for (location in locationResult.locations) {
+                        Log.d("rk", "Latitude: ${location.latitude}, Longitude: ${location.longitude}")
+
+                        if(latitude==null && longitude==null)
+                        {
+                            latitude=location.latitude
+                            longitude=location.longitude
+                            var location = "$latitude,$longitude"
+                            showProgressbar()
+                            viewModel.locationData(requireContext(), LocationInputModel(location = location),this@CropYieldPrediction)
+
+
+                        }
+
+                    }
+                }
+            }
+            if(checkPermissions())
+            {
+                if(!isLocationEnabled(requireContext())) {
+                    Toast("Please turn on location")
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(intent)
+                }
+                else
+                {
+                    startLocationUpdates()
+                }
+            }
+            else
+            {
+                requestPermissions()
+            }
+
             stateArrFn()
             cropArrFn()
             seasonArrFn()
+
+            viewModel.observe_locationData().observe(viewLifecycleOwner, Observer { task->
+                cancelProgressbar()
+                if(task!=null)
+                {
+                    Log.d("rk", task.results?.get(0)?.region.toString())
+                    var region = task.results?.get(0)?.region.toString()
+
+                    binding.stateValue.text=region
+                    for(i in 0.. statesArrayList.size-1)
+                    {
+                        if(region== statesArrayList[i])
+                        {
+                            stateValue=i
+                            break;
+                        }
+                    }
+                    Log.d("rk",stateValue.toString())
+                }
+            })
             binding.areaCardView.setOnClickListener {
                 singleValueTypePopUp("Please enter the area value", areaValue) { newValue ->
                     areaValue = newValue
@@ -65,10 +147,38 @@ class CropYieldPrediction : Fragment() {
             }
 
             binding.stateCardView.setOnClickListener {
-                singleValueChoosePopUp("Please choose one state value",statesArrayList) { newValue ->
-                    stateValue = newValue
-                    Log.d("rk", stateValue.toString())
-                    binding.stateValue.text="${statesArrayList[stateValue]}"
+                if(latitude==null && longitude==null)
+                {
+                    if(checkPermissions())
+                    {
+                        if(isLocationEnabled(requireContext()))
+                        {
+                            try {
+                                startLocationUpdates()
+                            }catch (e:Exception)
+                            {
+                                Log.d("rk",e.message.toString())
+                            }
+                        }
+                        else
+                        {
+                            Toast("Please turn on location")
+                            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                            startActivity(intent)
+                        }
+                    }
+                    else
+                    {
+                        requestPermissions()
+                    }
+                }
+                else
+                {
+                    singleValueChoosePopUp("Please choose one state value",statesArrayList) { newValue ->
+                        stateValue = newValue
+                        Log.d("rk", seasonValue.toString())
+                        binding.stateValue.text=statesArrayList[stateValue]
+                    }
                 }
             }
             binding.cropCardView.setOnClickListener {
@@ -152,7 +262,8 @@ class CropYieldPrediction : Fragment() {
             "Madhya Pradesh" to 19,
             "Maharashtra" to 20,
             "Manipur" to 21,
-            "Meghalaya" to 22
+            "Meghalaya" to 22,
+            "Tamil Nadu" to 23
         )
         for (state in statesMap.keys) {
             statesArrayList.add(state)
@@ -282,6 +393,66 @@ class CropYieldPrediction : Fragment() {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val formattedDate = current.format(formatter)
         return formattedDate.toString()
+    }
+    fun isLocationEnabled(context: Context): Boolean {
+        val locationManager: LocationManager =
+            context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            permissionId
+        )
+    }
+    @SuppressLint("MissingSuperCall")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == permissionId) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                startLocationUpdates()
+            }
+        }
+    }
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        val locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = 1000
+        }
+        mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+    }
+
+    override fun onStart() {
+        super.onStart()
+        startLocationUpdates()
+    }
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
     }
 
 }

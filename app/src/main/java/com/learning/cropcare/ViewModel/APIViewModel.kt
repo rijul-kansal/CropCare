@@ -1,12 +1,12 @@
 package com.learning.cropcare.ViewModel
 
 
-import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,9 +25,6 @@ import com.learning.cropcare.ApiService
 import com.learning.cropcare.Fragment.CropPrediction
 import com.learning.cropcare.Fragment.CropYieldPrediction
 import com.learning.cropcare.Fragment.FertilizerRecommendation
-import com.learning.cropcare.Fragment.PestDetection
-import com.learning.cropcare.Model.PestDetectionInputModel
-import com.learning.cropcare.Model.PestPredictionOutputModel
 import com.learning.cropcare.Model.ReverseGeoCode.LocationInputModel
 import com.learning.cropcare.Model.ReverseGeoCode.LocationOutputModel
 import com.learning.cropcare.Utils.Constants
@@ -35,8 +32,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
-import java.net.ResponseCache
-import kotlin.math.log
 
 class APIViewModel : ViewModel() {
 
@@ -156,7 +151,7 @@ class APIViewModel : ViewModel() {
     fun observe_rainfall(): LiveData<Response<RainfallOutputModel>> = result_rainfall
 
     var result_location  : MutableLiveData<LocationOutputModel> = MutableLiveData()
-    fun locationData(context: Context, input: LocationInputModel, fragment:CropPrediction) {
+    fun locationData(context: Context, input: LocationInputModel, fragment: Fragment) {
         if (checkForInternet1(context)) {
             val matchApi = Constants.getInstance1().create(ApiService::class.java)
             viewModelScope.launch(Dispatchers.IO) {
@@ -169,16 +164,40 @@ class APIViewModel : ViewModel() {
                         } else {
                             val errorBody = result.errorBody()?.string()
                             val errorMessage = parseErrorMessage(errorBody)
-                            fragment.errorFn(errorMessage ?: "Unknown error")
+                            when(fragment)
+                            {
+                                is CropPrediction->{
+                                    fragment.errorFn(errorMessage ?: "Unknown error")
+                                }
+                                is CropYieldPrediction->{
+                                    fragment.errorFn(errorMessage ?: "Unknown error")
+                                }
+                            }
                         }
                     }
                 } catch (e: Exception) {
                     Log.e("rk", "Exception: ${e.message}")
-                    fragment.errorFn("Registration failed. Please check your internet connection and try again.")
+                    when(fragment)
+                    {
+                        is CropPrediction->{
+                            fragment.errorFn("Registration failed. Please check your internet connection and try again.")
+                        }
+                        is CropYieldPrediction->{
+                            fragment.errorFn("Registration failed. Please check your internet connection and try again.")
+                        }
+                    }
                 }
             }
         } else {
-            fragment.errorFn("Please switch on your internet and retry")
+            when(fragment)
+            {
+                is CropPrediction->{
+                    fragment.errorFn("Please switch on your internet and retry")
+                }
+                is CropYieldPrediction->{
+                    fragment.errorFn("Please switch on your internet and retry")
+                }
+            }
         }
     }
     fun observe_locationData(): LiveData<LocationOutputModel> = result_location

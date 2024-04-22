@@ -9,7 +9,7 @@ object Constants {
     const val NAME="name"
     const val PASSWORD="password"
     const val SELECT_PICTURE=2
-    const val BASE_URL ="https://3a81-34-86-25-235.ngrok-free.app"
+    const val BASE_URL ="https://5409-34-139-102-120.ngrok-free.app"
     const val BASE_URL1 ="https://trueway-geocoding.p.rapidapi.com"
     const val SIGNUP_OR_SIGN_IN="signinorsignup"
     const val START_LANGUAGE_CHOSEN_OR_NOT="start language chosen or not "
