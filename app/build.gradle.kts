@@ -88,4 +88,7 @@ dependencies {
     // firestore
     implementation("com.google.firebase:firebase-firestore")
 
+    // location
+    implementation("com.google.android.gms:play-services-location:15.0.1")
+
 }

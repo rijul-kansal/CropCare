@@ -28,6 +28,8 @@ import com.learning.cropcare.Fragment.FertilizerRecommendation
 import com.learning.cropcare.Fragment.PestDetection
 import com.learning.cropcare.Model.PestDetectionInputModel
 import com.learning.cropcare.Model.PestPredictionOutputModel
+import com.learning.cropcare.Model.ReverseGeoCode.LocationInputModel
+import com.learning.cropcare.Model.ReverseGeoCode.LocationOutputModel
 import com.learning.cropcare.Utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -152,6 +154,34 @@ class APIViewModel : ViewModel() {
         }
     }
     fun observe_rainfall(): LiveData<Response<RainfallOutputModel>> = result_rainfall
+
+    var result_location  : MutableLiveData<LocationOutputModel> = MutableLiveData()
+    fun locationData(context: Context, input: LocationInputModel, fragment:CropPrediction) {
+        if (checkForInternet1(context)) {
+            val matchApi = Constants.getInstance1().create(ApiService::class.java)
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val result = matchApi.reverseGeocode(input.location,input.languahe,input.apiKey,input.apiHost)
+                    Log.d("rk",result.toString() )
+                    withContext(Dispatchers.Main) {
+                        if (result.isSuccessful) {
+                            result_location.value = result.body()
+                        } else {
+                            val errorBody = result.errorBody()?.string()
+                            val errorMessage = parseErrorMessage(errorBody)
+                            fragment.errorFn(errorMessage ?: "Unknown error")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("rk", "Exception: ${e.message}")
+                    fragment.errorFn("Registration failed. Please check your internet connection and try again.")
+                }
+            }
+        } else {
+            fragment.errorFn("Please switch on your internet and retry")
+        }
+    }
+    fun observe_locationData(): LiveData<LocationOutputModel> = result_location
 
 
     private fun parseErrorMessage(errorBody: String?): String? {

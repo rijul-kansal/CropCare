@@ -1,11 +1,23 @@
 package com.learning.cropcare.Fragment
 
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.os.Bundle
+import android.provider.Settings
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import java.util.*
 import android.app.Dialog
 import android.os.Build
-import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +25,23 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.learning.agrovision.Model.CropPredictionInputModel
 import com.learning.agrovision.Model.RainfallInputModel
+import com.learning.cropcare.Model.ReverseGeoCode.LocationInputModel
 import com.learning.cropcare.R
+import com.learning.cropcare.Utils.Constants
 import com.learning.cropcare.ViewModel.APIViewModel
 import com.learning.cropcare.ViewModel.FireStoreDataBaseViewModel
 import com.learning.cropcare.databinding.FragmentCropPredictionBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 
 class CropPrediction : Fragment() {
     var dialog: Dialog?=null
@@ -31,6 +49,13 @@ class CropPrediction : Fragment() {
     lateinit var viewModel: APIViewModel
     lateinit var viewModel1: FireStoreDataBaseViewModel
     lateinit var singleValueTypePopUp: Dialog
+
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private val permissionId = 2
+    private lateinit var locationCallback: LocationCallback
+
+    var latitude:Double?=null
+    var longitude:Double?=null
 
     var seasonValue :Int=-1
     var stateValue :Int=-1
@@ -42,117 +67,79 @@ class CropPrediction : Fragment() {
         binding= FragmentCropPredictionBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
 
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         viewModel= ViewModelProvider(requireActivity())[APIViewModel::class.java]
         viewModel1= ViewModelProvider(requireActivity())[FireStoreDataBaseViewModel::class.java]
-        val cropMappings = mapOf(
-            "Arecanut" to 0,
-            "Arhar/Tur" to 1,
-            "Bajra" to 2,
-            "Banana" to 3,
-            "Barley" to 4,
-            "Black pepper" to 5,
-            "Cardamom" to 6,
-            "Cashewnut" to 7,
-            "Castor seed" to 8,
-            "Coconut" to 9,
-            "Coriander" to 10,
-            "Cotton(lint)" to 11,
-            "Cowpea(Lobia)" to 12,
-            "Dry chillies" to 13,
-            "Garlic" to 14,
-            "Ginger" to 15,
-            "Gram" to 16,
-            "Groundnut" to 17,
-            "Guar seed" to 18,
-            "Horse-gram" to 19,
-            "Jowar" to 20,
-            "Jute" to 21,
-            "Khesari" to 22,
-            "Linseed" to 23,
-            "Maize" to 24,
-            "Masoor" to 25,
-            "Mesta" to 26,
-            "Moong(Green Gram)" to 27,
-            "Moth" to 28,
-            "Niger seed" to 29,
-            "Oilseeds total" to 30,
-            "Onion" to 31,
-            "Other Rabi pulses" to 32,
-            "Other Cereals" to 33,
-            "Other Kharif pulses" to 34,
-            "Other Summer Pulses" to 35,
-            "Peas & beans (Pulses)" to 36,
-            "Potato" to 37,
-            "Ragi" to 38,
-            "Rapeseed &Mustard" to 39,
-            "Rice" to 40,
-            "Safflower" to 41,
-            "Sannhamp" to 42,
-            "Sesamum" to 43,
-            "Small millets" to 44,
-            "Soyabean" to 45,
-            "Sugarcane" to 46,
-            "Sunflower" to 47,
-            "Sweet potato" to 48,
-            "Tapioca" to 49,
-            "Tobacco" to 50,
-            "Turmeric" to 51,
-            "Urad" to 52,
-            "Wheat" to 53,
-            "other oilseeds" to 54
-        )
-        val cropList = ArrayList<String>(cropMappings.keys)
-        val seasonMappings = mapOf(
-            "autumn" to 0,
-            "kharif" to 1,
-            "rabi" to 2,
-            "summer" to 3,
-            "whole Year" to 4,
-            "winter" to 5
-        )
-        val seasonList = ArrayList<String>(seasonMappings.keys)
-        val stateMappings = mapOf(
-            "Andhra Pradesh" to 0,
-            "Arunachal Pradesh" to 1,
-            "Assam" to 2,
-            "Bihar" to 3,
-            "Chhattisgarh" to 4,
-            "Delhi" to 5,
-            "Goa" to 6,
-            "Gujarat" to 7,
-            "Haryana" to 8,
-            "Himachal Pradesh" to 9,
-            "Jammu and Kashmir" to 10,
-            "Jharkhand" to 11,
-            "Karnataka" to 12,
-            "Kerala" to 13,
-            "Madhya Pradesh" to 14,
-            "Maharashtra" to 15,
-            "Manipur" to 16,
-            "Meghalaya" to 17,
-            "Mizoram" to 18,
-            "Nagaland" to 19,
-            "Odisha" to 20,
-            "Puducherry" to 21,
-            "Punjab" to 22,
-            "Sikkim" to 23,
-            "Tamil Nadu" to 24,
-            "Telangana" to 25,
-            "Tripura" to 26,
-            "Uttar Pradesh" to 27,
-            "Uttarakhand" to 28,
-            "West Bengal" to 29
-        )
-        val stateList = ArrayList<String>(stateMappings.keys)
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations) {
+                    Log.d("rk", "Latitude: ${location.latitude}, Longitude: ${location.longitude}")
 
+                    if(latitude==null && longitude==null)
+                    {
+                        latitude=location.latitude
+                        longitude=location.longitude
+                        var location = "$latitude,$longitude"
+                        showProgressbar()
+                        viewModel.locationData(requireContext(), LocationInputModel(location = location),this@CropPrediction)
+
+
+                    }
+
+                }
+            }
+        }
+        if(checkPermissions())
+        {
+            if(!isLocationEnabled(requireContext())) {
+                Toast("Please turn on location")
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+            else
+            {
+                startLocationUpdates()
+            }
+        }
+        else
+        {
+            requestPermissions()
+        }
+
+
+
+        val cropList = ArrayList(Constants.cropMapping().keys)
+        val seasonList = ArrayList(Constants.seasonMapping().keys)
+        val stateList = ArrayList(Constants.stateMapping().keys)
+
+        viewModel.observe_locationData().observe(viewLifecycleOwner, Observer { task->
+            cancelProgressbar()
+            if(task!=null)
+            {
+                Log.d("rk", task.results?.get(0)?.region.toString())
+                var region = task.results?.get(0)?.region.toString()
+
+                binding.stateValue.text=region
+                for(i in 0.. stateList.size-1)
+                {
+                    if(region== stateList[i])
+                    {
+                        stateValue=i
+                        break;
+                    }
+                }
+                Log.d("rk",stateValue.toString())
+            }
+        })
         binding.areaCardView.setOnClickListener {
             singleValueTypePopUp("Please enter the area value", areaValue) { newValue ->
                 areaValue = newValue
@@ -161,11 +148,40 @@ class CropPrediction : Fragment() {
             }
         }
         binding.stateCardView.setOnClickListener {
-            singleValueChoosePopUp("Please choose one state value",stateList) { newValue ->
-                stateValue = newValue
-                Log.d("rk", stateValue.toString())
-                binding.stateValue.text=stateList[stateValue]
+            if(latitude==null && longitude==null)
+            {
+                if(checkPermissions())
+                {
+                    if(isLocationEnabled(requireContext()))
+                    {
+                        try {
+                            startLocationUpdates()
+                        }catch (e:Exception)
+                        {
+                            Log.d("rk",e.message.toString())
+                        }
+                    }
+                    else
+                    {
+                        Toast("Please turn on location")
+                        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        startActivity(intent)
+                    }
+                }
+                else
+                {
+                    requestPermissions()
+                }
             }
+            else
+            {
+                singleValueChoosePopUp("Please choose one state value",stateList) { newValue ->
+                    stateValue = newValue
+                    Log.d("rk", seasonValue.toString())
+                    binding.stateValue.text=stateList[stateValue]
+                }
+            }
+
         }
         binding.seasonCardView.setOnClickListener {
             singleValueChoosePopUp("Please choose one season value",seasonList) { newValue ->
@@ -331,4 +347,64 @@ class CropPrediction : Fragment() {
         return current.format(formatter)
     }
 
+    fun isLocationEnabled(context: Context): Boolean {
+        val locationManager: LocationManager =
+            context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            permissionId
+        )
+    }
+    @SuppressLint("MissingSuperCall")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == permissionId) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                startLocationUpdates()
+            }
+        }
+    }
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        val locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = 1000
+        }
+        mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+    }
+
+    override fun onStart() {
+        super.onStart()
+        startLocationUpdates()
+    }
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
+    }
 }
