@@ -8,10 +8,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -23,11 +22,12 @@ import com.learning.cropcare.Fragment.History
 import com.learning.cropcare.Fragment.PestDetection
 import com.learning.cropcare.Fragment.Profile
 import com.learning.cropcare.R
+import com.learning.cropcare.Utils.BaseActivity
 import com.learning.cropcare.Utils.Constants
 import com.learning.cropcare.ViewModel.AuthenticationViewModel
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
     var doubleBackToExitPressedOnce = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,5 +149,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.side_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.chatBot) {
+            startActivity(Intent(this,ChatBotActivity::class.java))
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

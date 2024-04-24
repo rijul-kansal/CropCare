@@ -11,8 +11,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -25,10 +25,12 @@
         android:theme="@style/Theme.CropCare"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.ChatBotActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.InDetailHistory"
-            android:theme="@style/AboveAppBarColourlightGreen"
-            android:exported="true" >
-        </activity>
+            android:exported="true"
+            android:theme="@style/AboveAppBarColourlightGreen"></activity>
         <activity
             android:name=".Activity.MobileNumberSignInActivity"
             android:exported="false"
@@ -51,7 +53,7 @@
         <activity
             android:name=".Activity.SignUpActivity"
             android:exported="true"
-            android:theme="@style/AboveAppBarColourlightGreen"></activity>
+            android:theme="@style/AboveAppBarColourlightGreen" />
         <activity
             android:name=".Activity.LanguageActivity"
             android:exported="true"
@@ -69,7 +71,7 @@
         <activity
             android:name=".Activity.MainActivity"
             android:exported="true"
-            android:theme="@style/AboveAppBarColourWhite"></activity>
+            android:theme="@style/AboveAppBarColourlightGreen1" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
