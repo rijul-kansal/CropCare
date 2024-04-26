@@ -1,9 +1,9 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
 }
-
 android {
     namespace = "com.learning.cropcare"
     compileSdk = 34
@@ -37,6 +37,11 @@ android {
     buildFeatures{
         viewBinding= true
     }
+
+    packagingOptions {
+        exclude("META-INF/INDEX.LIST")
+        exclude("META-INF/DEPENDENCIES")
+    }
 }
 
 dependencies {
@@ -54,8 +59,8 @@ dependencies {
 
     implementation("com.airbnb.android:lottie:6.3.0")
      // general firebase
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.firebase:firebase-auth:22.3.1")
+    implementation("com.google.android.gms:play-services-auth:21.1.0")
 
     // view model
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
@@ -87,8 +92,10 @@ dependencies {
 
     // firestore
     implementation("com.google.firebase:firebase-firestore")
-
     // location
     implementation("com.google.android.gms:play-services-location:15.0.1")
+
+    implementation("io.kommunicate.sdk:kommunicateui:2.9.5")
+
 
 }

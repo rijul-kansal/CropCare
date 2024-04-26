@@ -14,6 +14,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.applozic.mobicomkit.api.account.register.RegistrationResponse
 import com.google.android.material.navigation.NavigationView
 import com.learning.cropcare.Fragment.CropPrediction
 import com.learning.cropcare.Fragment.CropYieldPrediction
@@ -25,6 +26,11 @@ import com.learning.cropcare.R
 import com.learning.cropcare.Utils.BaseActivity
 import com.learning.cropcare.Utils.Constants
 import com.learning.cropcare.ViewModel.AuthenticationViewModel
+import io.kommunicate.KmConversationBuilder
+import io.kommunicate.Kommunicate
+import io.kommunicate.callbacks.KMLoginHandler
+import io.kommunicate.callbacks.KmCallback
+import io.kommunicate.users.KMUser
 
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -35,7 +41,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setContentView(R.layout.activity_main)
         //  TODO BOT
         // TODO MODEL Deployment
-        // TODO PDF of History
+        Kommunicate.init(applicationContext, "219178a5a842a9f33a15be86a9d3daae9")
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -159,9 +165,43 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.chatBot) {
-            startActivity(Intent(this,ChatBotActivity::class.java))
+          chatBotStart()
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun chatBotStart()
+    {
+        val user =  KMUser()
+        user.userId = "1234"
+        user.displayName = "1234"; // Pass the display name of the user
+        user.setImageLink("https://firebasestorage.googleapis.com/v0/b/crop-care-9161c.appspot.com/o/UserImages%2F1000119345?alt=media&token=fd4ec75a-7f89-45d5-9a14-3419e2e35b69"); // Pass the image URL for the user's display image
+        Kommunicate.login(this, user, object : KMLoginHandler {
+            override fun onSuccess(
+                registrationResponse: RegistrationResponse?,
+                context: Context?
+            ) {
+                // You can perform operations such as opening the conversation, creating a new conversation or update user details on success
+                KmConversationBuilder(this@MainActivity)
+                    .setKmUser(user)
+                    .launchConversation(object : KmCallback {
+                        override fun onSuccess(message: Any) {
+                            Log.d("rk", "Success : $message")
+                        }
+
+                        override fun onFailure(error: Any) {
+                            Log.d("rk", "Failure : $error")
+                        }
+                    })
+            }
+
+            override fun onFailure(
+                registrationResponse: RegistrationResponse,
+                exception: java.lang.Exception
+            ) {
+                // You can perform actions such as repeating the login call or throw an error message on failure
+            }
+        })
     }
 }

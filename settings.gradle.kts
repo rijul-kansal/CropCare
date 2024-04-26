@@ -10,6 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+            maven ( url = "https://kommunicate.jfrog.io/artifactory/kommunicate-android-sdk" )
     }
 }
 
