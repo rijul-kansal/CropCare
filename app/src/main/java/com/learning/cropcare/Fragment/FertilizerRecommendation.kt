@@ -22,7 +22,6 @@ import com.learning.cropcare.ViewModel.FireStoreDataBaseViewModel
 import com.learning.cropcare.databinding.FragmentFertilizerRecommendationBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.UUID
 
 
 class FertilizerRecommendation : Fragment() {

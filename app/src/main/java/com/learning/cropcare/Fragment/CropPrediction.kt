@@ -134,9 +134,11 @@ class CropPrediction : Fragment() {
                     if(region== stateList[i])
                     {
                         stateValue=i
+                        Log.d("rk",stateValue.toString())
                         break;
                     }
                 }
+
                 Log.d("rk",stateValue.toString())
             }
         })
@@ -212,9 +214,26 @@ class CropPrediction : Fragment() {
             }
         }
 
+
         binding.predictYield.setOnClickListener {
-            showProgressbar()
-            viewModel.rainfall(requireContext(),RainfallInputModel(stateList[stateValue],seasonList[seasonValue]),this)
+            if(annunal_RainfallValue==-1)
+            {
+                showProgressbar()
+                viewModel.rainfall(requireContext(),RainfallInputModel(stateList[stateValue],seasonList[seasonValue]),this)
+
+            }
+            else
+            {
+                if(seasonValue!=-1 && stateValue!=-1 && areaValue!=-1 && annunal_RainfallValue!=-1 && fertilizerValue!=-1 && yeildValue!=-1 )
+                {
+                    showProgressbar()
+                    viewModel.cropPrediction(requireContext(), CropPredictionInputModel(annunal_RainfallValue,areaValue,fertilizerValue,seasonValue,stateValue,yeildValue),this)
+                }
+                else
+                {
+                    Toast("Please enter all the values")
+                }
+            }
         }
         viewModel.observe_cropPrediction().observe(requireActivity(), Observer { res->
             cancelProgressbar()

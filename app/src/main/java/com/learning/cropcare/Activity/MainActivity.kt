@@ -39,7 +39,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //  TODO BOT
         // TODO MODEL Deployment
         Kommunicate.init(applicationContext, "219178a5a842a9f33a15be86a9d3daae9")
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -173,6 +172,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     fun chatBotStart()
     {
+        showProgressBar(this)
         val user =  KMUser()
         user.userId = "1234"
         user.displayName = "1234"; // Pass the display name of the user
@@ -187,6 +187,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     .setKmUser(user)
                     .launchConversation(object : KmCallback {
                         override fun onSuccess(message: Any) {
+                            cancelProgressBar()
                             Log.d("rk", "Success : $message")
                         }
 
