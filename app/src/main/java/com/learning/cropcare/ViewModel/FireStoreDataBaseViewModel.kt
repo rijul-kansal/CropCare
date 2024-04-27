@@ -127,9 +127,9 @@ class FireStoreDataBaseViewModel : ViewModel() {
                 is FertilizerRecommendation->{
                     fragment.errorFn("Switch on your internet please")
                 }
-                is PestDetection->{
-                    fragment.errorFn("Switch on your internet please")
-                }
+//                is PestDetection->{
+//                    fragment.errorFn("Switch on your internet please")
+//                }
             }
         }
     }

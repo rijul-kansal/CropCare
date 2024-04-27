@@ -39,7 +39,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // TODO MODEL Deployment
         Kommunicate.init(applicationContext, "219178a5a842a9f33a15be86a9d3daae9")
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
