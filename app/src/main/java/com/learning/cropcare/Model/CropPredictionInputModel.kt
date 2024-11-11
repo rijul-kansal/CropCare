@@ -1,10 +1,12 @@
 package com.learning.agrovision.Model
 
 data class CropPredictionInputModel(
-    var Annual_Rainfall: Int? = null, // 2051.5
-    var Area: Int? = null, // 1234.5
-    var Fertilizer: Int? = null, // 7024878.38
-    var Season: Int? = null, // 3
-    var State: Int? = null, // 0
-    var Yield: Int? = null // 0.796087
+    var N: Int? = null, // 2051.5
+    var P: Int? = null, // 1234.5
+    var K: Int? = null, // 7024878.38
+    var temperature: Int? = null, // 3
+    var humidity: Int? = null, // 0
+    var ph: Int? = null ,// 0.796087
+    var rainfall: Int? = null, // 0.796087
+    var soil: Int? = null // 0.796087
 )

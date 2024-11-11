@@ -89,7 +89,6 @@ class CropYieldPrediction : Fragment() {
                             latitude=location.latitude
                             longitude=location.longitude
                             var location = "$latitude,$longitude"
-                            showProgressbar()
                             viewModel.locationData(requireContext(), LocationInputModel(location = location),this@CropYieldPrediction)
 
 
@@ -108,6 +107,7 @@ class CropYieldPrediction : Fragment() {
                 else
                 {
                     startLocationUpdates()
+                    showProgressbar()
                 }
             }
             else
@@ -441,7 +441,7 @@ class CropYieldPrediction : Fragment() {
     private fun startLocationUpdates() {
         val locationRequest = LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            interval = 1000
+            interval = 10000
         }
         mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }

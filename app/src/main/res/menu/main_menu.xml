@@ -30,14 +30,14 @@
         android:title="General">
 
         <menu>
-            <item
-                android:id="@+id/history"
-                android:icon="@drawable/history_icon"
-                android:title="History"/>
-            <item
-                android:id="@+id/language"
-                android:icon="@drawable/language_icon"
-                android:title="Language"/>
+<!--            <item-->
+<!--                android:id="@+id/history"-->
+<!--                android:icon="@drawable/history_icon"-->
+<!--                android:title="History"/>-->
+<!--            <item-->
+<!--                android:id="@+id/language"-->
+<!--                android:icon="@drawable/language_icon"-->
+<!--                android:title="Language"/>-->
             <item
                 android:id="@+id/profile"
                 android:icon="@drawable/profile_icon"

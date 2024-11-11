@@ -43,6 +43,6 @@
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Team Tejas"/>
+            android:text=" Ananya Tejas Rijul"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

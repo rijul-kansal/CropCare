@@ -40,7 +40,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Kommunicate.init(applicationContext, "219178a5a842a9f33a15be86a9d3daae9")
-        drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+        drawerLayout = findViewById(R.id.drawer_layout)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
@@ -56,7 +56,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             navigationView.setCheckedItem(R.id.crop_prediction)
         }
     }
-//
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.crop_prediction -> {
@@ -89,16 +88,16 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(Intent(this,IntroActivity::class.java))
                 finish()
             }
-            R.id.language->{
-                var intent =Intent(this,LanguageActivity::class.java)
-                intent.putExtra(Constants.START_LANGUAGE_CHOSEN_OR_NOT,"no")
-                startActivity(intent)
-            }
-            R.id.history->{
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, History()).commit()
-                supportActionBar?.setTitle("History")
-            }
+//            R.id.language->{
+//                var intent =Intent(this,LanguageActivity::class.java)
+//                intent.putExtra(Constants.START_LANGUAGE_CHOSEN_OR_NOT,"no")
+//                startActivity(intent)
+//            }
+//            R.id.history->{
+//                supportFragmentManager.beginTransaction()
+//                    .replace(R.id.fragment_container, History()).commit()
+//                supportActionBar?.setTitle("History")
+//            }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -161,47 +160,47 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.chatBot) {
-          chatBotStart()
-            return true
-        }
+//        val id = item.itemId
+//        if (id == R.id.chatBot) {
+//          chatBotStart()
+//            return true
+//        }
         return super.onOptionsItemSelected(item)
     }
 
-    fun chatBotStart()
-    {
-        showProgressBar(this)
-        val user =  KMUser()
-        user.userId = "1234"
-        user.displayName = "1234"; // Pass the display name of the user
-        user.setImageLink("https://firebasestorage.googleapis.com/v0/b/crop-care-9161c.appspot.com/o/UserImages%2F1000119345?alt=media&token=fd4ec75a-7f89-45d5-9a14-3419e2e35b69"); // Pass the image URL for the user's display image
-        Kommunicate.login(this, user, object : KMLoginHandler {
-            override fun onSuccess(
-                registrationResponse: RegistrationResponse?,
-                context: Context?
-            ) {
-                // You can perform operations such as opening the conversation, creating a new conversation or update user details on success
-                KmConversationBuilder(this@MainActivity)
-                    .setKmUser(user)
-                    .launchConversation(object : KmCallback {
-                        override fun onSuccess(message: Any) {
-                            cancelProgressBar()
-                            Log.d("rk", "Success : $message")
-                        }
-
-                        override fun onFailure(error: Any) {
-                            Log.d("rk", "Failure : $error")
-                        }
-                    })
-            }
-
-            override fun onFailure(
-                registrationResponse: RegistrationResponse,
-                exception: java.lang.Exception
-            ) {
-                // You can perform actions such as repeating the login call or throw an error message on failure
-            }
-        })
-    }
+//    fun chatBotStart()
+//    {
+//        showProgressBar(this)
+//        val user =  KMUser()
+//        user.userId = "1234"
+//        user.displayName = "1234"; // Pass the display name of the user
+//        user.setImageLink("https://firebasestorage.googleapis.com/v0/b/crop-care-9161c.appspot.com/o/UserImages%2F1000119345?alt=media&token=fd4ec75a-7f89-45d5-9a14-3419e2e35b69"); // Pass the image URL for the user's display image
+//        Kommunicate.login(this, user, object : KMLoginHandler {
+//            override fun onSuccess(
+//                registrationResponse: RegistrationResponse?,
+//                context: Context?
+//            ) {
+//                // You can perform operations such as opening the conversation, creating a new conversation or update user details on success
+//                KmConversationBuilder(this@MainActivity)
+//                    .setKmUser(user)
+//                    .launchConversation(object : KmCallback {
+//                        override fun onSuccess(message: Any) {
+//                            cancelProgressBar()
+//                            Log.d("rk", "Success : $message")
+//                        }
+//
+//                        override fun onFailure(error: Any) {
+//                            Log.d("rk", "Failure : $error")
+//                        }
+//                    })
+//            }
+//
+//            override fun onFailure(
+//                registrationResponse: RegistrationResponse,
+//                exception: java.lang.Exception
+//            ) {
+//                // You can perform actions such as repeating the login call or throw an error message on failure
+//            }
+//        })
+//    }
 }
